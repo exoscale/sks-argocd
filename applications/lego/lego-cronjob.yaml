@@ -1,0 +1,57 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+
+metadata:
+  labels:
+    app.kubernetes.io/name: k8s-lego-star
+    app.kubernetes.io/part-of: k8s-lego-star
+    app.kubernetes.io/component: cronjob
+  name: k8s-lego-star
+
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 5
+  successfulJobsHistoryLimit: 10
+  schedule: "0 3 * * *" # Daily at 3am
+
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: k8s-lego-star
+          automountServiceAccountToken: true
+          restartPolicy: Never
+          containers:
+          - name: k8s-lego-star
+            image: ghcr.io/wdullaer/k8s-lego-star:latest
+            imagePullPolicy: Always
+            resources:
+              limits:
+                cpu: 100m
+                memory: 128Mi
+              requests:
+                cpu: 100m
+                memory: 128Mi
+            args:
+            - "-f"
+            - "/etc/k8s-lego-star/config.yaml"
+            volumeMounts:
+            - name: config-volume
+              mountPath: /etc/k8s-lego-star
+            env:
+            - name: CONFIG_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: CLOUDFLARE_DNS_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: k8s-lego-star
+                  key: api-token
+          volumes:
+          - name: config-volume
+            configMap:
+              name: k8s-lego-star
+              items:
+              - key: config
+                path: config.yaml

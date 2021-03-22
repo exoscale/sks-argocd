@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd
+spec:
+  tls:
+  - hosts:
+    - argocd.sks-demo.wdullaer.com
+  rules:
+  - host: "argocd.sks-demo.wdullaer.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: argocd-server
+            port:
+              name: http

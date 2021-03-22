@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: k8s-lego-star
+    app.kubernetes.io/part-of: k8s-lego-star
+  name: k8s-lego-star
+data:
+  config: |
+    acme:
+      endpoint: "https://acme-v02.api.letsencrypt.org/directory"
+      email: "wouter.dullaert@exoscale.ch"
+    dns:
+      provider: cloudflare
+    secretname: wildcard-sks-demo
+    domain: "*.sks-demo.wdullaer.com"

@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- base/argo-cd-namespace.yaml
+- base/argo-cd-ui-ingress.yaml
+- https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/ha/install.yaml
+
+patchesStrategicMerge:
+- overlays/production/argo-cd-cm.yaml
+- overlays/production/argocd-rbac-cm.yaml
+- overlays/production/argocd-server-service.yaml
+
+patchesJson6902:
+- path: overlays/production/argocd-server-deploy-command.yaml
+  target:
+    group: apps
+    kind: Deployment
+    name: argocd-server
+    version: v1
+
+namespace: argocd
+
+images:
+- name: quai.io/argoproj/argocd
+  newName: docker.pkg.github.com/argoproj/argo-cd/argocd
+  newTag: 1.8.7
