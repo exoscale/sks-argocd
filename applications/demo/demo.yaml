@@ -42,10 +42,11 @@ metadata:
   name: app
   labels:
     app.kubernetes.io/name: app
-tls:
+spec:
+  tls:
   - hosts:
     - app.sks-demo.wdullaer.com
-rules:
+  rules:
   - host: "app.sks-demo.wdullaer.com"
     http:
       paths:
@@ -53,6 +54,6 @@ rules:
         path: "/"
         backend:
           service:
-            name: nginx-demo
+            name: app
             port:
               name: http
