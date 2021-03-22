@@ -32,6 +32,7 @@ spec:
     app.kubernetes.io/name: app
   ports:
   - protocol: TCP
+    name: http
     port: 80
     targetPort: 80
 
