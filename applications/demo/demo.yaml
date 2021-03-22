@@ -15,8 +15,10 @@ spec:
         app.kubernetes.io/name: app
     spec:
       containers:
-      - image: nginx
-        name: nginx
+      - image: traefik/whoami
+        name: demo
+      # - image: nginx
+      #   name: demo
         ports:
         - containerPort: 80
 
