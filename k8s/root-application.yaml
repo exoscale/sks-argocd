@@ -6,7 +6,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/exoscale/sks-argocd.git'
-    path: k8s/root-application
+    path: k8s/applications/
     targetRevision: HEAD
   destination:
     server: 'https://kubernetes.default.svc'
