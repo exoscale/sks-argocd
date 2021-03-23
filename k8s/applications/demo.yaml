@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: demo
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/exoscale/sks-argocd.git'
+    path: k8s/demo
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: demo
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
