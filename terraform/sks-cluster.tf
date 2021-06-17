@@ -8,11 +8,11 @@ locals {
 resource "exoscale_sks_cluster" "demo" {
   zone          = local.zone
   name          = "demo"
-  version       = "1.20.2"
+  version       = "1.21.1"
   description   = "Webinar demo cluster"
   service_level = "pro"
   cni           = "calico"
-  addons        = ["exoscale-cloud-controller"]
+  exoscale_ccm  = true
 }
 
 # A security group so the nodes can communicate and we can pull logs
