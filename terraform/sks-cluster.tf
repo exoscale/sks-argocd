@@ -1,18 +1,22 @@
 locals {
-  zone = "de-fra-1"
+  zone   = "de-fra-1"
+  labels = { "project" : "sks-demo" }
 }
 
 # This resource will create the control plane
 # Since we're going for the fully managed option, we will ask sks to preinstall
 # the calico network plugin and the exoscale-cloud-controller
 resource "exoscale_sks_cluster" "demo" {
-  zone          = local.zone
-  name          = "demo"
-  version       = "1.21.1"
-  description   = "Webinar demo cluster"
-  service_level = "pro"
-  cni           = "calico"
-  exoscale_ccm  = true
+  zone           = local.zone
+  name           = "demo"
+  version        = "1.22.2"
+  description    = "Webinar demo cluster"
+  service_level  = "pro"
+  cni            = "calico"
+  exoscale_ccm   = true
+  metrics_server = true
+  auto_upgrade   = true
+  labels         = local.labels
 }
 
 # A security group so the nodes can communicate and we can pull logs
@@ -55,9 +59,10 @@ resource "exoscale_sks_nodepool" "workers" {
   zone               = local.zone
   cluster_id         = exoscale_sks_cluster.demo.id
   name               = "workers"
-  instance_type      = "medium"
+  instance_type      = "standard.medium"
   size               = 3
   security_group_ids = [exoscale_security_group.sks_nodes.id]
+  labels             = local.labels
 }
 
 output "kubectl_command" {
