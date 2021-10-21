@@ -48,9 +48,9 @@ metadata:
 spec:
   tls:
   - hosts:
-    - app.sks-demo.wdullaer.com
+    - pull-request.sks-demo.wdullaer.com
   rules:
-  - host: "app.sks-demo.wdullaer.com"
+  - host: "pull-request.sks-demo.wdullaer.com"
     http:
       paths:
       - pathType: Prefix
